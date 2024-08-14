@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: 28,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFFE57373), // Soft terracotta
+                      color: Color(0xFFE57373),
                       letterSpacing: 1.2,
                     ),
                     textAlign: TextAlign.center,

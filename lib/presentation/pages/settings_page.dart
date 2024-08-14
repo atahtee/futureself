@@ -52,7 +52,13 @@ class SettingsPage extends StatelessWidget {
                     _buildReviewItem(Icons.info_outline, "App version"),
                     _buildReviewItem(Icons.article, "Terms of Service"),
                     _buildReviewItem(Icons.gavel, "Privacy Policy"),
-
+                  ]
+                ),
+                SizedBox(height: 24,),
+                _buildSection(
+                  "Auth",
+                  [
+                    _buildReviewItem(Icons.logout, "Logout")
                   ]
                 )
               ],

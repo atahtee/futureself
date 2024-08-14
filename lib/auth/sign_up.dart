@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:futureme/auth/sign_in.dart';
+import 'package:futureme/main.dart';
 import 'package:futureme/presentation/pages/main_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  TextEditingController emailController = TextEditingController();
+
+  TextEditingController passwordController = TextEditingController();
+
+  TextEditingController usernameController = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          color: Color(0xFFF3E9E3), 
+          color: Color(0xFFF3E9E3),
         ),
         child: SafeArea(
           child: Padding(
@@ -42,37 +56,37 @@ class SignUpPage extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 48),
-                        _buildTextField("Full Name", Icons.person),
+                        _buildTextField(
+                            "Username", Icons.person, usernameController),
                         SizedBox(height: 16),
-                        _buildTextField("Email", Icons.email),
+                        _buildTextField("Email", Icons.email, emailController),
                         SizedBox(height: 16),
-                        _buildTextField("Password", Icons.lock, isPassword: true),
+                        _buildTextField(
+                            "Password", Icons.lock, passwordController,
+                            isPassword: true),
                         SizedBox(height: 16),
-                        _buildTextField("Confirm Password", Icons.lock, isPassword: true),
+                        _buildTextField(
+                            "Confirm Password", Icons.lock, passwordController,
+                            isPassword: true),
                         SizedBox(height: 24),
                         ElevatedButton(
-                          child: Text(
-                            "Sign Up",
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
+                            child: Text(
+                              "Sign Up",
+                              style: GoogleFonts.poppins(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Color(0xFFE57373), // Accent color
-                            padding: EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: Color(0xFFE57373),
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              elevation: 2,
                             ),
-                            elevation: 2,
-                          ),
-                          onPressed: () {
-                            // Implement sign up logic here
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => MainScreen()));
-                          },
-                        ),
+                            onPressed: (){}),
                         SizedBox(height: 16),
                         Text(
                           "By signing up, you agree to our Terms of Service and Privacy Policy",
@@ -104,8 +118,10 @@ class SignUpPage extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => SignInPage()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignInPage()));
                         },
                       ),
                     ],
@@ -119,7 +135,9 @@ class SignUpPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(String hint, IconData icon, {bool isPassword = false}) {
+  Widget _buildTextField(
+      String hint, IconData icon, TextEditingController controller,
+      {bool isPassword = false}) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -133,11 +151,12 @@ class SignUpPage extends StatelessWidget {
         ],
       ),
       child: TextField(
+        controller: controller,
         obscureText: isPassword,
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: GoogleFonts.poppins(color: Colors.grey[400]),
-          prefixIcon: Icon(icon, color: Color(0xFFE57373)), 
+          prefixIcon: Icon(icon, color: Color(0xFFE57373)),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide.none,

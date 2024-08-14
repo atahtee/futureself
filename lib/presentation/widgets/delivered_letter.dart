@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:futureme/presentation/widgets/on_theway.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DeliveredLettersTab extends StatelessWidget {
@@ -16,7 +17,7 @@ class DeliveredLettersTab extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Color(0xFFE57373), 
+              color: Color(0xFFE57373),
             ),
           ),
           SizedBox(height: 20),
@@ -63,8 +64,69 @@ class DeliveredLettersTab extends StatelessWidget {
                 );
               },
             ),
+          
           ),
+          _buildOnTheWayButton(context)
         ],
+        
+      ),
+      
+    );
+    
+  }
+
+  Widget _buildOnTheWayButton(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => OnTheWayLettersPage()),
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+        decoration: BoxDecoration(
+          color: Color(0xFFE57373),
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xFFE57373).withOpacity(0.3),
+              blurRadius: 8,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.local_shipping, color: Colors.white),
+            SizedBox(width: 10),
+            Text(
+              "On the way",
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            SizedBox(width: 10),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Text(
+                "5",
+                style: GoogleFonts.poppins(
+                  color: Color(0xFFE57373),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

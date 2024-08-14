@@ -8,7 +8,7 @@ class NewLetterTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime initialDate = DateTime.now();
+    final DateTime initialDate = DateTime.now().add(Duration(days: 30));
 
     return Padding(
       padding: EdgeInsets.all(20),
@@ -92,8 +92,7 @@ class NewLetterTab extends StatelessWidget {
                                     mode: CupertinoDatePickerMode.date,
                                     initTime: initialDate,
                                     minTime: initialDate,
-                                    maxTime: DateTime.now()
-                                        .add(Duration(days: 365 * 10)),
+                                    maxTime: DateTime.now().add(Duration(days: 365 * 10)),
                                     barrierColor: Colors.black12,
                                     minuteInterval: 1,
                                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
