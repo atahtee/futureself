@@ -43,7 +43,7 @@ class OnTheWayLettersPage extends StatelessWidget {
                 child: Icon(Icons.local_shipping, color: Color(0xFFE57373)),
               ),
               title: Text(
-                "Letter from Future You",
+                "Letter from  You",
                 style: GoogleFonts.poppins(
                   color: Colors.black87,
                   fontWeight: FontWeight.bold,
