@@ -45,22 +45,19 @@ class SettingsPage extends StatelessWidget {
                     _buildActionItem(Icons.share, "Share with Friends", () {}),
                   ],
                 ),
-                SizedBox(height: 24,),
-                _buildSection(
-                  "Reviews",
-                  [
-                    _buildReviewItem(Icons.info_outline, "App version"),
-                    _buildReviewItem(Icons.article, "Terms of Service"),
-                    _buildReviewItem(Icons.gavel, "Privacy Policy"),
-                  ]
+                SizedBox(
+                  height: 24,
                 ),
-                SizedBox(height: 24,),
+                _buildSection("Reviews", [
+                  _buildReviewItem(Icons.info_outline, "App version"),
+                  _buildReviewItem(Icons.article, "Terms of Service"),
+                  _buildReviewItem(Icons.gavel, "Privacy Policy"),
+                ]),
+                SizedBox(
+                  height: 24,
+                ),
                 _buildSection(
-                  "Auth",
-                  [
-                    _buildReviewItem(Icons.logout, "Logout")
-                  ]
-                )
+                    "Auth", [_buildReviewItem(Icons.logout, "Logout")])
               ],
             ),
           ),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "604119566392",
+    "project_id": "futureself-75bc9",
+    "storage_bucket": "futureself-75bc9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604119566392:android:885b929b39de791617becd",
+        "android_client_info": {
+          "package_name": "com.example.futureme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4-mvdDOssEX-WkeymsNw2qqXRvNBNibE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

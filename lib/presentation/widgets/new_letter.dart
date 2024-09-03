@@ -16,7 +16,7 @@ class NewLetterTab extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Write to Future You",
+            "Write a letter to Future You",
             style: GoogleFonts.poppins(
               fontSize: 24,
               fontWeight: FontWeight.bold,
