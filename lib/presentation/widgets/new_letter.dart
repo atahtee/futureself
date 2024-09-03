@@ -8,10 +8,10 @@ class NewLetterTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime initialDate = DateTime.now().add(Duration(days: 30));
+    final DateTime initialDate = DateTime.now().add(const Duration(days: 30));
 
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -20,13 +20,13 @@ class NewLetterTab extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Color(0xFFE57373),
+              color: const Color(0xFFE57373),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Expanded(
             child: Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
@@ -34,7 +34,7 @@ class NewLetterTab extends StatelessWidget {
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
                     blurRadius: 10,
-                    offset: Offset(0, 5),
+                    offset: const Offset(0, 5),
                   ),
                 ],
               ),
@@ -51,18 +51,18 @@ class NewLetterTab extends StatelessWidget {
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
-                        fillColor: Color(0xFFF3E9E3).withOpacity(0.5),
+                        fillColor: const Color(0xFFF3E9E3).withOpacity(0.5),
                       ),
                       style: GoogleFonts.poppins(color: Colors.black87),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Container(
-                      padding: EdgeInsets.all(15),
+                      padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
-                        color: Color(0xFFF3E9E3).withOpacity(0.5),
+                        color: const Color(0xFFF3E9E3).withOpacity(0.5),
                         borderRadius: BorderRadius.circular(15),
                         border: Border.all(
-                            color: Color(0xFFE57373).withOpacity(0.5)),
+                            color: const Color(0xFFE57373).withOpacity(0.5)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,27 +72,27 @@ class NewLetterTab extends StatelessWidget {
                             style: GoogleFonts.poppins(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFFE57373),
+                              color: const Color(0xFFE57373),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Row(
                             children: [
-                              Icon(Icons.calendar_today,
+                              const Icon(Icons.calendar_today,
                                   color: Color(0xFFE57373)),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               Expanded(
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     border:
-                                        Border.all(color: Color(0xFFE57373)),
+                                        Border.all(color: const Color(0xFFE57373)),
                                   ),
                                   child: TimePickerSpinnerPopUp(
                                     mode: CupertinoDatePickerMode.date,
                                     initTime: initialDate,
                                     minTime: initialDate,
-                                    maxTime: DateTime.now().add(Duration(days: 365 * 10)),
+                                    maxTime: DateTime.now().add(const Duration(days: 365 * 10)),
                                     barrierColor: Colors.black12,
                                     minuteInterval: 1,
                                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
@@ -113,23 +113,23 @@ class NewLetterTab extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
-                      child: Text(
-                        "Send to Future",
-                        style: GoogleFonts.poppins(fontSize: 18),
-                      ),
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Color(0xFFE57373),
+                        backgroundColor: const Color(0xFFE57373),
                         padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                            const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
                         elevation: 5,
                       ),
                       onPressed: () {},
+                      child: Text(
+                        "Send to Future",
+                        style: GoogleFonts.poppins(fontSize: 18),
+                      ),
                     ),
                   ],
                 ),

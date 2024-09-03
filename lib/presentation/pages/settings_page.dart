@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:futureme/auth/auth_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
+
+  void logout() {
+    final auth = AuthService();
+
+    auth.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF3E9E3),
+      backgroundColor: const Color(0xFFF3E9E3),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -20,10 +27,10 @@ class SettingsPage extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 28,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFFE57373),
+                    color: const Color(0xFFE57373),
                   ),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 _buildSection(
                   "App Settings",
                   [
@@ -36,7 +43,7 @@ class SettingsPage extends StatelessWidget {
                         Icons.calendar_today, "Week Start On", false),
                   ],
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 _buildSection(
                   "More",
                   [
@@ -45,7 +52,7 @@ class SettingsPage extends StatelessWidget {
                     _buildActionItem(Icons.share, "Share with Friends", () {}),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 24,
                 ),
                 _buildSection("Reviews", [
@@ -53,11 +60,11 @@ class SettingsPage extends StatelessWidget {
                   _buildReviewItem(Icons.article, "Terms of Service"),
                   _buildReviewItem(Icons.gavel, "Privacy Policy"),
                 ]),
-                SizedBox(
+                const SizedBox(
                   height: 24,
                 ),
                 _buildSection(
-                    "Auth", [_buildReviewItem(Icons.logout, "Logout")])
+                    "Auth", [_buildActionItem(Icons.logout, "Logout", logout)])
               ],
             ),
           ),
@@ -66,7 +73,7 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSection(String title, List<Widget> children) {
+  Widget _buildSection(String title, List<Widget> children, ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -75,10 +82,10 @@ class SettingsPage extends StatelessWidget {
           style: GoogleFonts.poppins(
             fontSize: 18,
             fontWeight: FontWeight.w600,
-            color: Color(0xFFE57373),
+            color: const Color(0xFFE57373),
           ),
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -87,7 +94,7 @@ class SettingsPage extends StatelessWidget {
               BoxShadow(
                 color: Colors.black.withOpacity(0.05),
                 blurRadius: 10,
-                offset: Offset(0, 5),
+                offset: const Offset(0, 5),
               ),
             ],
           ),
@@ -101,7 +108,7 @@ class SettingsPage extends StatelessWidget {
 
   Widget _buildSettingItem(IconData icon, String title, bool isSwitch) {
     return ListTile(
-      leading: Icon(icon, color: Color(0xFFE57373)),
+      leading: Icon(icon, color: const Color(0xFFE57373)),
       title: Text(
         title,
         style: GoogleFonts.poppins(
@@ -113,15 +120,15 @@ class SettingsPage extends StatelessWidget {
           ? Switch(
               value: true,
               onChanged: (value) {},
-              activeColor: Color(0xFFE57373),
+              activeColor: const Color(0xFFE57373),
             )
-          : Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+          : const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
     );
   }
 
   Widget _buildActionItem(IconData icon, String title, VoidCallback onTap) {
     return ListTile(
-      leading: Icon(icon, color: Color(0xFFE57373)),
+      leading: Icon(icon, color: const Color(0xFFE57373)),
       title: Text(
         title,
         style: GoogleFonts.poppins(
@@ -135,7 +142,7 @@ class SettingsPage extends StatelessWidget {
 
   Widget _buildReviewItem(IconData icon, String title) {
     return ListTile(
-      leading: Icon(icon, color: Color(0xFFE57373)),
+      leading: Icon(icon, color: const Color(0xFFE57373)),
       title: Text(
         title,
         style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),

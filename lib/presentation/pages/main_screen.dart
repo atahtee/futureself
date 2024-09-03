@@ -4,7 +4,7 @@ import 'package:futureme/presentation/pages/settings_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({super.key});
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -35,7 +35,7 @@ class _MainScreenState extends State<MainScreen> {
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
               blurRadius: 8,
-              offset: Offset(0, -3),
+              offset: const Offset(0, -3),
             ),
           ],
         ),
@@ -51,7 +51,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Color(0xFFE57373),
+          selectedItemColor: const Color(0xFFE57373),
           unselectedItemColor: Colors.grey,
           onTap: _onItemTapped,
           backgroundColor: Colors.white,

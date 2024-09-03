@@ -8,7 +8,7 @@ class DeliveredLettersTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -17,16 +17,16 @@ class DeliveredLettersTab extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Color(0xFFE57373),
+              color: const Color(0xFFE57373),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Expanded(
             child: ListView.builder(
               itemCount: 4,
               itemBuilder: (context, index) {
                 return Container(
-                  margin: EdgeInsets.only(bottom: 15),
+                  margin: const EdgeInsets.only(bottom: 15),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15),
@@ -34,18 +34,18 @@ class DeliveredLettersTab extends StatelessWidget {
                       BoxShadow(
                         color: Colors.black.withOpacity(0.05),
                         blurRadius: 5,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),
                   child: ListTile(
                     leading: Container(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Color(0xFFE57373).withOpacity(0.2),
+                        color: const Color(0xFFE57373).withOpacity(0.2),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Icon(Icons.mail, color: Color(0xFFE57373)),
+                      child: const Icon(Icons.mail, color: Color(0xFFE57373)),
                     ),
                     title: Text(
                       "Letter from ${DateTime.now().subtract(Duration(days: 365 * (index + 1))).year}",
@@ -58,7 +58,7 @@ class DeliveredLettersTab extends StatelessWidget {
                       "Opened on ${DateTime.now().subtract(Duration(days: 30 * index)).toString().split(' ')[0]}",
                       style: GoogleFonts.poppins(color: Colors.black54),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios, color: Color(0xFFE57373)),
+                    trailing: const Icon(Icons.arrow_forward_ios, color: Color(0xFFE57373)),
                     onTap: () {},
                   ),
                 );
@@ -80,27 +80,27 @@ class DeliveredLettersTab extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => OnTheWayLettersPage()),
+          MaterialPageRoute(builder: (context) => const OnTheWayLettersPage()),
         );
       },
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
         decoration: BoxDecoration(
-          color: Color(0xFFE57373),
+          color: const Color(0xFFE57373),
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
-              color: Color(0xFFE57373).withOpacity(0.3),
+              color: const Color(0xFFE57373).withOpacity(0.3),
               blurRadius: 8,
-              offset: Offset(0, 4),
+              offset: const Offset(0, 4),
             ),
           ],
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.local_shipping, color: Colors.white),
-            SizedBox(width: 10),
+            const Icon(Icons.local_shipping, color: Colors.white),
+            const SizedBox(width: 10),
             Text(
               "On the way",
               style: GoogleFonts.poppins(
@@ -109,9 +109,9 @@ class DeliveredLettersTab extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15),
@@ -119,7 +119,7 @@ class DeliveredLettersTab extends StatelessWidget {
               child: Text(
                 "5",
                 style: GoogleFonts.poppins(
-                  color: Color(0xFFE57373),
+                  color: const Color(0xFFE57373),
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
                 ),
