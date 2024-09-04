@@ -114,7 +114,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             )),
                         const SizedBox(height: 16),
                         Text(
-                          "By signing up, you agree to our Terms of  and Privacy Policy",
+                          "By signing up, you agree to our Terms of Service and Privacy Policy",
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                             color: Colors.grey[600],
