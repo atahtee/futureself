@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:futureme/auth/auth_service.dart';
 import 'package:futureme/auth/sign_up.dart';
-import 'package:futureme/presentation/pages/main_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SignInPage extends StatefulWidget {

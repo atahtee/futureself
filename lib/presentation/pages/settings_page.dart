@@ -1,9 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:futureme/auth/auth_service.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatelessWidget {
+  
+  Future<void> sendEmail() async {
+  final Uri emailUri = Uri(
+    scheme: 'mailto',
+    path: 'atatisam14@gmail.com',
+    queryParameters: {'subject': 'Hello from Flutter!'},
+  );
+
+  try {
+    bool canLaunch = await canLaunchUrl(emailUri);
+    if (canLaunch) {
+      await launchUrl(emailUri);
+    } else {
+      print('Cannot launch email app. No email app installed?');
+    }
+  } catch (e) {
+    print('Error launching email app: $e');
+    throw 'Could not launch email app';
+  }
+}
+
+
   const SettingsPage({super.key});
+
+
 
   void logout() {
     final auth = AuthService();
@@ -47,7 +72,9 @@ class SettingsPage extends StatelessWidget {
                 _buildSection(
                   "More",
                   [
-                    _buildActionItem(Icons.feedback, "Send Feedback", () {}),
+                    _buildActionItem(Icons.feedback, "Send Feedback", () {
+                      sendEmail();
+                    }),
                     _buildActionItem(Icons.star, "Rate on Play Store", () {}),
                     _buildActionItem(Icons.share, "Share with Friends", () {}),
                   ],
@@ -56,7 +83,7 @@ class SettingsPage extends StatelessWidget {
                   height: 24,
                 ),
                 _buildSection("Reviews", [
-                  _buildReviewItem(Icons.info_outline, "App version"),
+                  _buildReviewItem(Icons.info_outline, "App version", "1.0.0+1"),
                   _buildReviewItem(Icons.article, "Terms of Service"),
                   _buildReviewItem(Icons.gavel, "Privacy Policy"),
                 ]),
@@ -73,7 +100,10 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSection(String title, List<Widget> children, ) {
+  Widget _buildSection(
+    String title,
+    List<Widget> children,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -140,13 +170,23 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildReviewItem(IconData icon, String title) {
+  Widget _buildReviewItem(IconData icon, String title, [String? trailing]) {
     return ListTile(
       leading: Icon(icon, color: const Color(0xFFE57373)),
       title: Text(
         title,
         style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
       ),
+       trailing: trailing != null
+        ? Text(
+            trailing,
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: Colors.grey[600],
+            ),
+          )
+        : null,
     );
   }
 }

@@ -1,10 +1,64 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
 
-class NewLetterTab extends StatelessWidget {
+class NewLetterTab extends StatefulWidget {
   const NewLetterTab({super.key});
+
+  @override
+  State<NewLetterTab> createState() => _NewLetterTabState();
+}
+
+class _NewLetterTabState extends State<NewLetterTab> {
+  final TextEditingController _letterController = TextEditingController();
+  DateTime _selectedDate = DateTime.now().add(const Duration(days: 30));
+  String? username;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUsername();
+  }
+
+  Future<void> _fetchUsername() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+
+      setState(() {
+        username = userDoc['username'];
+      });
+    }
+  }
+
+  Future<void> _sendToFuture() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      final letterContent = _letterController.text;
+
+      if (letterContent.isNotEmpty) {
+        await FirebaseFirestore.instance.collection('letters').add({
+          'userId': user.uid,
+          'letterContent': letterContent,
+          'deliveryDate': _selectedDate,
+          'createdAt': Timestamp.now()
+        });
+
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Letter sent to the future')));
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Please write a letter')));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +70,8 @@ class NewLetterTab extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Write a letter to Future You",
+            username != null ?
+            "Write a letter to Future $username" : "Write a letter to Future You",
             style: GoogleFonts.poppins(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -42,6 +97,7 @@ class NewLetterTab extends StatelessWidget {
                 child: Column(
                   children: [
                     TextField(
+                      controller: _letterController,
                       maxLines: 8,
                       decoration: InputDecoration(
                         hintText: "Dear Future Me...",
@@ -85,22 +141,28 @@ class NewLetterTab extends StatelessWidget {
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    border:
-                                        Border.all(color: const Color(0xFFE57373)),
+                                    border: Border.all(
+                                        color: const Color(0xFFE57373)),
                                   ),
                                   child: TimePickerSpinnerPopUp(
                                     mode: CupertinoDatePickerMode.date,
                                     initTime: initialDate,
                                     minTime: initialDate,
-                                    maxTime: DateTime.now().add(const Duration(days: 365 * 10)),
+                                    maxTime: DateTime.now()
+                                        .add(const Duration(days: 365 * 10)),
                                     barrierColor: Colors.black12,
                                     minuteInterval: 1,
-                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 15),
                                     cancelText: 'Cancel',
                                     confirmText: 'Confirm',
                                     pressType: PressType.singlePress,
                                     timeFormat: 'dd MMM yyyy',
-                                    onChange: (dateTime) {},
+                                    onChange: (dateTime) {
+                                      setState(() {
+                                        _selectedDate = dateTime;
+                                      });
+                                    },
                                     textStyle: GoogleFonts.poppins(
                                       fontSize: 16,
                                       color: Colors.black87,
@@ -118,14 +180,14 @@ class NewLetterTab extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
                         backgroundColor: const Color(0xFFE57373),
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 40),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
                         elevation: 5,
                       ),
-                      onPressed: () {},
+                      onPressed: _sendToFuture,
                       child: Text(
                         "Send to Future",
                         style: GoogleFonts.poppins(fontSize: 18),

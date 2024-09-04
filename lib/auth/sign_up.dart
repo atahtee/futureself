@@ -26,10 +26,7 @@ class _SignUpPageState extends State<SignUpPage> {
     if (passwordController.text == confirmPasswordController.text) {
       try {
         await auth.signUpWithEmailPassword(
-            emailController.text, passwordController.text);
-
-        // Navigator.pushReplacement(
-        //     context, MaterialPageRoute(builder: (context) => SignInPage()));
+            emailController.text, passwordController.text, usernameController.text);
       } catch (e) {
         showDialog(
             context: context,
