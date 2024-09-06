@@ -1,34 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:futureme/auth/auth_service.dart';
+import 'package:futureme/presentation/pages/account_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatelessWidget {
-  
   Future<void> sendEmail() async {
-  final Uri emailUri = Uri(
-    scheme: 'mailto',
-    path: 'atatisam14@gmail.com',
-    queryParameters: {'subject': 'Hello from Flutter!'},
-  );
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: 'atatisam14@gmail.com',
+      queryParameters: {'subject': 'Hello from Flutter!'},
+    );
 
-  try {
-    bool canLaunch = await canLaunchUrl(emailUri);
-    if (canLaunch) {
-      await launchUrl(emailUri);
-    } else {
-      print('Cannot launch email app. No email app installed?');
+    try {
+      bool canLaunch = await canLaunchUrl(emailUri);
+      if (canLaunch) {
+        await launchUrl(emailUri);
+      } else {
+        print('Cannot launch email app. No email app installed?');
+      }
+    } catch (e) {
+      print('Error launching email app: $e');
+      throw 'Could not launch email app';
     }
-  } catch (e) {
-    print('Error launching email app: $e');
-    throw 'Could not launch email app';
   }
-}
-
 
   const SettingsPage({super.key});
 
+  void getAccountDetails(BuildContext context) {
+    final auth = AuthService();
+    final user = auth.getCurrentUser();
 
+    if (user != null) {
+      final String firstName = user.displayName ?? 'N/A';
+      final String email = user.email ?? 'N/A';
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AccountPage(
+                    firstName: firstName,
+                    email: email,
+                  )));
+    } else {
+      print('No username and email available');
+    }
+  }
 
   void logout() {
     final auth = AuthService();
@@ -83,7 +100,8 @@ class SettingsPage extends StatelessWidget {
                   height: 24,
                 ),
                 _buildSection("Reviews", [
-                  _buildReviewItem(Icons.info_outline, "App version", "1.0.0+1"),
+                  _buildReviewItem(
+                      Icons.info_outline, "App version", "1.0.0+1"),
                   _buildReviewItem(Icons.article, "Terms of Service"),
                   _buildReviewItem(Icons.gavel, "Privacy Policy"),
                 ]),
@@ -91,7 +109,12 @@ class SettingsPage extends StatelessWidget {
                   height: 24,
                 ),
                 _buildSection(
-                    "Auth", [_buildActionItem(Icons.logout, "Logout", logout)])
+                  "Auth",
+                  [
+                    _buildActionItem(Icons.account_circle_sharp, "Account", ()=> getAccountDetails(context)),
+                    _buildActionItem(Icons.logout, "Logout", logout),
+                  ],
+                )
               ],
             ),
           ),
@@ -177,16 +200,16 @@ class SettingsPage extends StatelessWidget {
         title,
         style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
       ),
-       trailing: trailing != null
-        ? Text(
-            trailing,
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Colors.grey[600],
-            ),
-          )
-        : null,
+      trailing: trailing != null
+          ? Text(
+              trailing,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey[600],
+              ),
+            )
+          : null,
     );
   }
 }
