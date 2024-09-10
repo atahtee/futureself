@@ -51,6 +51,8 @@ class _NewLetterTabState extends State<NewLetterTab> {
           'createdAt': Timestamp.now()
         });
 
+        _letterController.clear();
+
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Letter sent to the future')));
       } else {
@@ -70,8 +72,9 @@ class _NewLetterTabState extends State<NewLetterTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            username != null ?
-            "Write a letter to Future $username" : "Write a letter to Future You",
+            username != null
+                ? "Write a letter to Future $username"
+                : "Write a letter to Future You",
             style: GoogleFonts.poppins(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -185,7 +188,7 @@ class _NewLetterTabState extends State<NewLetterTab> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        elevation: 5,
+                        elevation: 0,
                       ),
                       onPressed: _sendToFuture,
                       child: Text(

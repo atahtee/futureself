@@ -111,7 +111,8 @@ class SettingsPage extends StatelessWidget {
                 _buildSection(
                   "Auth",
                   [
-                    _buildActionItem(Icons.account_circle_sharp, "Account", ()=> getAccountDetails(context)),
+                    _buildActionItem(Icons.account_circle_sharp, "Account",
+                        () => getAccountDetails(context)),
                     _buildActionItem(Icons.logout, "Logout", logout),
                   ],
                 )
