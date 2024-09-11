@@ -40,7 +40,7 @@ class OnTheWayLettersPage extends StatelessWidget {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No letters found'));
+            return Center(child: Text('No letters found yet'));
           }
 
           final letters = snapshot.data!.docs;
@@ -55,7 +55,6 @@ class OnTheWayLettersPage extends StatelessWidget {
 
               return GestureDetector(
                 onTap: () {
-                  // Navigate to details page when letter is clicked
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -139,6 +138,7 @@ class LetterDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+           
             Text(
               "Arriving on: ${deliveryDate.toString().split(' ')[0]}",
               style: GoogleFonts.poppins(
