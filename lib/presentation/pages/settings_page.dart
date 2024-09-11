@@ -3,6 +3,7 @@ import 'package:futureme/auth/auth_service.dart';
 import 'package:futureme/presentation/pages/account_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:rating_dialog/rating_dialog.dart';
 
 class SettingsPage extends StatelessWidget {
   Future<void> sendEmail() async {
@@ -24,8 +25,83 @@ class SettingsPage extends StatelessWidget {
       throw 'Could not launch email app';
     }
   }
+   Future<void> sendFeedbackEmail(double rating, String comment) async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: 'atatisam14@gmail.com',
+      query: encodeQueryParameters(<String, String>{
+        'subject': 'App Feedback',
+        'body': 'Rating: $rating\nComment: $comment',
+      }),
+    );
 
-  const SettingsPage({super.key});
+    try {
+      if (await canLaunchUrl(emailLaunchUri)) {
+        await launchUrl(emailLaunchUri);
+      } else {
+        throw 'Could not launch $emailLaunchUri';
+      }
+    } catch (e) {
+      print('Error launching email client: $e');
+      // You might want to show an error message to the user here
+    }
+  }
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
+  }
+
+  void _showRatingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => Theme(
+        data: ThemeData.light().copyWith(
+          colorScheme: ColorScheme.light(
+            primary: Color(0xFFE57373),
+            secondary: Color(0xFFE57373),
+          ),
+        ),
+        child: RatingDialog(
+          initialRating: 1.0,
+          title: Text(
+            'Enjoying Future Me?',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.poppins(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          message: Text(
+            'Tap a star to rate. Your feedback helps us improve!',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.poppins(fontSize: 15),
+          ),
+          image: Image.asset('assets/app_icon.png', height: 100),  // Make sure you have this asset
+          submitButtonText: 'SUBMIT',
+          commentHint: 'Tell us your thoughts...',
+          starSize: 30,
+          submitButtonTextStyle: GoogleFonts.poppins(
+            fontWeight: FontWeight.bold,
+            fontSize: 17,
+          ),
+          onCancelled: () => print('Cancelled'),
+          onSubmitted: (response) async {
+            print('Rating: ${response.rating}, Comment: ${response.comment}');
+            await sendFeedbackEmail(response.rating, response.comment);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Thank you for your feedback! An email has been prepared for you to send.')),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  
+  SettingsPage({super.key});
 
   void getAccountDetails(BuildContext context) {
     final auth = AuthService();
@@ -92,7 +168,9 @@ class SettingsPage extends StatelessWidget {
                     _buildActionItem(Icons.feedback, "Send Feedback", () {
                       sendEmail();
                     }),
-                    _buildActionItem(Icons.star, "Rate on Play Store", () {}),
+                    _buildActionItem(Icons.star, "Rate the Application", () {
+                      _showRatingDialog(context);
+                    }),
                     _buildActionItem(Icons.share, "Share with Friends", () {}),
                   ],
                 ),
