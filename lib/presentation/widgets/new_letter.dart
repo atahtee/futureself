@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
 
 class NewLetterTab extends StatefulWidget {
   const NewLetterTab({super.key});
@@ -64,7 +63,6 @@ class _NewLetterTabState extends State<NewLetterTab> {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime initialDate = DateTime.now().add(const Duration(days: 30));
 
     return Padding(
       padding: const EdgeInsets.all(20),
@@ -142,36 +140,65 @@ class _NewLetterTabState extends State<NewLetterTab> {
                               const SizedBox(width: 10),
                               Expanded(
                                 child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: const Color(0xFFE57373)),
-                                  ),
-                                  child: TimePickerSpinnerPopUp(
-                                    mode: CupertinoDatePickerMode.date,
-                                    initTime: initialDate,
-                                    minTime: initialDate,
-                                    maxTime: DateTime.now()
-                                        .add(const Duration(days: 365 * 10)),
-                                    barrierColor: Colors.black12,
-                                    minuteInterval: 1,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 15),
-                                    cancelText: 'Cancel',
-                                    confirmText: 'Confirm',
-                                    pressType: PressType.singlePress,
-                                    timeFormat: 'dd MMM yyyy',
-                                    onChange: (dateTime) {
-                                      setState(() {
-                                        _selectedDate = dateTime;
-                                      });
-                                    },
-                                    textStyle: GoogleFonts.poppins(
-                                      fontSize: 16,
-                                      color: Colors.black87,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: const Color(0xFFE57373)),
                                     ),
-                                  ),
-                                ),
+                                    child: InkWell(
+                                      onTap: () async {
+                                      final DateTime?
+                                          picked = await showDatePicker(
+                                              context: context,
+                                              firstDate: DateTime.now()
+                                                  .add(
+                                                      const Duration(days: 30)),
+                                              lastDate: DateTime.now().add(
+                                                  const Duration(
+                                                      days: 365 * 10)));
+                                      if (picked != null &&
+                                          picked != _selectedDate) {
+                                        setState(() {
+                                          _selectedDate = picked;
+                                        });
+                                      }
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                                      child: Text(
+                                        '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 16,
+                                          color: Colors.black87
+                                        ),
+                                      ),
+                                      )
+                                    )
+                                    // child: TimePickerSpinnerPopUp(
+                                    //   mode: CupertinoDatePickerMode.date,
+                                    //   initTime: initialDate,
+                                    //   minTime: initialDate,
+                                    //   maxTime: DateTime.now()
+                                    //       .add(const Duration(days: 365 * 10)),
+                                    //   barrierColor: Colors.black12,
+                                    //   minuteInterval: 1,
+                                    //   padding: const EdgeInsets.symmetric(
+                                    //       horizontal: 12, vertical: 15),
+                                    //   cancelText: 'Cancel',
+                                    //   confirmText: 'Confirm',
+                                    //   pressType: PressType.singlePress,
+                                    //   timeFormat: 'dd MMM yyyy',
+                                    //   onChange: (dateTime) {
+                                    //     setState(() {
+                                    //       _selectedDate = dateTime;
+                                    //     });
+                                    //   },
+                                    //   textStyle: GoogleFonts.poppins(
+                                    //     fontSize: 16,
+                                    //     color: Colors.black87,
+                                    //   ),
+                                    // ),
+                                    ),
                               ),
                             ],
                           ),

@@ -12,6 +12,7 @@ class OnTheWayLettersPage extends StatelessWidget {
       return FirebaseFirestore.instance
           .collection('letters')
           .where('userId', isEqualTo: user.uid)
+          .where('deliveryDate', isGreaterThan: Timestamp.now())
           .orderBy('deliveryDate')
           .get();
     }

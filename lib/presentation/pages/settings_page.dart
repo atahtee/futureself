@@ -43,7 +43,6 @@ class SettingsPage extends StatelessWidget {
       }
     } catch (e) {
       print('Error launching email client: $e');
-      // You might want to show an error message to the user here
     }
   }
 
