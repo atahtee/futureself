@@ -20,6 +20,52 @@ class OnTheWayLettersPage extends StatelessWidget {
         message: 'No user logged in', code: 'USER_NOT_FOUND');
   }
 
+  Future<void> _deleteLetter(BuildContext context, String letterId) async {
+  final confirm = await showDialog<bool>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Confirm Deletion'),
+        content: Text('Are you sure you want to delete this letter?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text('Cancel')
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text('Delete')
+          )
+        ],
+      );
+    }
+  );
+
+  if (confirm == true) {
+    try {
+      await FirebaseFirestore.instance
+          .collection('letters')
+          .doc(letterId)
+          .delete();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Letter deleted successfully'))
+      );
+      print('Letter deleted successfully: $letterId');  // Add this line for logging
+    } catch (e) {
+      print('Error deleting letter: $e');  // Add this line for logging
+      String errorMessage = 'Failed to delete letter';
+      if (e is FirebaseException) {
+        errorMessage += ': ${e.code} - ${e.message}';
+      } else {
+        errorMessage += ': $e';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage))
+      );
+    }
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +97,9 @@ class OnTheWayLettersPage extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             itemBuilder: (context, index) {
               final letter = letters[index];
-              final deliveryDate = (letter['deliveryDate'] as Timestamp).toDate();
+              final letterId = letter.id;
+              final deliveryDate =
+                  (letter['deliveryDate'] as Timestamp).toDate();
               final letterContent = letter['letterContent'];
 
               return GestureDetector(
@@ -66,6 +114,7 @@ class OnTheWayLettersPage extends StatelessWidget {
                     ),
                   );
                 },
+                onLongPress: () => _deleteLetter(context, letterId),
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 15),
                   decoration: BoxDecoration(
@@ -86,7 +135,8 @@ class OnTheWayLettersPage extends StatelessWidget {
                         color: const Color(0xFFE57373).withOpacity(0.2),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Icon(Icons.local_shipping, color: Color(0xFFE57373)),
+                      child: const Icon(Icons.local_shipping,
+                          color: Color(0xFFE57373)),
                     ),
                     title: Text(
                       "Letter from You",
@@ -99,7 +149,8 @@ class OnTheWayLettersPage extends StatelessWidget {
                       "Arriving on ${deliveryDate.toString().split(' ')[0]}",
                       style: GoogleFonts.poppins(color: Colors.black54),
                     ),
-                    trailing: const Icon(Icons.hourglass_empty, color: Color(0xFFE57373)),
+                    trailing: const Icon(Icons.hourglass_empty,
+                        color: Color(0xFFE57373)),
                   ),
                 ),
               );
@@ -139,7 +190,6 @@ class LetterDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           
             Text(
               "Arriving on: ${deliveryDate.toString().split(' ')[0]}",
               style: GoogleFonts.poppins(

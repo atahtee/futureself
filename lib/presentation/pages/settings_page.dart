@@ -25,7 +25,8 @@ class SettingsPage extends StatelessWidget {
       throw 'Could not launch email app';
     }
   }
-   Future<void> sendFeedbackEmail(double rating, String comment) async {
+
+  Future<void> sendFeedbackEmail(double rating, String comment) async {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: 'atatisam14@gmail.com',
@@ -46,9 +47,17 @@ class SettingsPage extends StatelessWidget {
     }
   }
 
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
   String? encodeQueryParameters(Map<String, String> params) {
     return params.entries
-        .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .map((e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
         .join('&');
   }
 
@@ -78,7 +87,7 @@ class SettingsPage extends StatelessWidget {
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(fontSize: 15),
           ),
-          image: Image.asset('assets/app_icon.png', height: 100),  // Make sure you have this asset
+          image: Image.asset('assets/app_icon.png', height: 100),
           submitButtonText: 'SUBMIT',
           commentHint: 'Tell us your thoughts...',
           starSize: 30,
@@ -91,7 +100,9 @@ class SettingsPage extends StatelessWidget {
             print('Rating: ${response.rating}, Comment: ${response.comment}');
             await sendFeedbackEmail(response.rating, response.comment);
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Thank you for your feedback! An email has been prepared for you to send.')),
+              SnackBar(
+                  content: Text(
+                      'Thank you for your feedback! An email has been prepared for you to send.')),
             );
           },
         ),
@@ -99,7 +110,6 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  
   SettingsPage({super.key});
 
   void getAccountDetails(BuildContext context) {
@@ -178,9 +188,14 @@ class SettingsPage extends StatelessWidget {
                 ),
                 _buildSection("Reviews", [
                   _buildReviewItem(
-                      Icons.info_outline, "App version", "1.0.0+1"),
-                  _buildReviewItem(Icons.article, "Terms of Service"),
-                  _buildReviewItem(Icons.gavel, "Privacy Policy"),
+                    Icons.info_outline,
+                    "App version",
+                    () {},
+                    "1.0.0+1",
+                  ),
+                  _buildReviewItem(Icons.article, "Terms of Service", () => _launchURL('https://futureself-three.vercel.app/terms')),
+
+                  _buildReviewItem(Icons.gavel, "Privacy Policy", () => _launchURL('https://futureself-three.vercel.app/privacy-policy')),
                 ]),
                 const SizedBox(
                   height: 24,
@@ -271,7 +286,8 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildReviewItem(IconData icon, String title, [String? trailing]) {
+  Widget _buildReviewItem(IconData icon, String title, VoidCallback onTap,
+      [String? trailing]) {
     return ListTile(
       leading: Icon(icon, color: const Color(0xFFE57373)),
       title: Text(
@@ -288,6 +304,7 @@ class SettingsPage extends StatelessWidget {
               ),
             )
           : null,
+      onTap: onTap,
     );
   }
 }
