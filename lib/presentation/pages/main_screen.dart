@@ -12,8 +12,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
-  static  List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
+  static  final List<Widget> _widgetOptions = <Widget>[
+    const HomePage(),
     SettingsPage(),
   ];
 

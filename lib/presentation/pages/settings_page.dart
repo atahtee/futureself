@@ -67,7 +67,7 @@ class SettingsPage extends StatelessWidget {
       barrierDismissible: true,
       builder: (context) => Theme(
         data: ThemeData.light().copyWith(
-          colorScheme: ColorScheme.light(
+          colorScheme: const ColorScheme.light(
             primary: Color(0xFFE57373),
             secondary: Color(0xFFE57373),
           ),
@@ -100,7 +100,7 @@ class SettingsPage extends StatelessWidget {
             print('Rating: ${response.rating}, Comment: ${response.comment}');
             await sendFeedbackEmail(response.rating, response.comment);
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                   content: Text(
                       'Thank you for your feedback! An email has been prepared for you to send.')),
             );
@@ -110,7 +110,7 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  SettingsPage({super.key});
+  const SettingsPage({super.key});
 
   void getAccountDetails(BuildContext context) {
     final auth = AuthService();

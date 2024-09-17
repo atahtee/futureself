@@ -25,16 +25,16 @@ class OnTheWayLettersPage extends StatelessWidget {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Confirm Deletion'),
-        content: Text('Are you sure you want to delete this letter?'),
+        title: const Text('Confirm Deletion'),
+        content: const Text('Are you sure you want to delete this letter?'),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text('Cancel')
+            child: const Text('Cancel')
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: Text('Delete')
+            child: const Text('Delete')
           )
         ],
       );
@@ -48,7 +48,7 @@ class OnTheWayLettersPage extends StatelessWidget {
           .doc(letterId)
           .delete();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Letter deleted successfully'))
+        const SnackBar(content: Text('Letter deleted successfully'))
       );
       print('Letter deleted successfully: $letterId');  // Add this line for logging
     } catch (e) {
@@ -87,7 +87,7 @@ class OnTheWayLettersPage extends StatelessWidget {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No letters found yet'));
+            return const Center(child: Text('No letters found yet'));
           }
 
           final letters = snapshot.data!.docs;

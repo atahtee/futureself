@@ -53,10 +53,10 @@ class _NewLetterTabState extends State<NewLetterTab> {
         _letterController.clear();
 
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Letter sent to the future')));
+            .showSnackBar(const SnackBar(content: Text('Letter sent to the future')));
       } else {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Please write a letter')));
+            .showSnackBar(const SnackBar(content: Text('Please write a letter')));
       }
     }
   }

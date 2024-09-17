@@ -129,7 +129,7 @@ class _SignInPageState extends State<SignInPage> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SignUpPage()));
+                                    builder: (context) => const SignUpPage()));
                           }),
                     ],
                   ),

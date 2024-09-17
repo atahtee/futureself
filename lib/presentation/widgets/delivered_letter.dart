@@ -99,7 +99,7 @@ class DeliveredLettersTab extends StatelessWidget {
                           ),
                           trailing: const Icon(
                             Icons.arrow_forward_ios,
-                            color: Color(0xFFE5737),
+                            color: Color(0x0ffe5737),
                           ),
                           onTap: () {
                             Navigator.push(

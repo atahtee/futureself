@@ -35,11 +35,11 @@ class _SignUpPageState extends State<SignUpPage> {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-                  title: Text('Error signing up'),
+                  title: const Text('Error signing up'),
                   content: Text(e.toString()),
                   actions: [
                     TextButton(
-                      child: Text('OK'),
+                      child: const Text('OK'),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                   ],
@@ -55,11 +55,11 @@ class _SignUpPageState extends State<SignUpPage> {
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
-                title: Text('Error'),
-                content: Text('Passwords don\'t match'),
+                title: const Text('Error'),
+                content: const Text('Passwords don\'t match'),
                 actions: [
                   TextButton(
-                    child: Text('OK'),
+                    child: const Text('OK'),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],
@@ -188,7 +188,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         onPressed: isLoading ? null : () => register(context),
         child: isLoading
-            ? SizedBox(
+            ? const SizedBox(
                 width: 24,
                 height: 24,
                 child: CircularProgressIndicator(
@@ -229,7 +229,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => SignInPage()));
+                      builder: (context) => const SignInPage()));
             },
           ),
         ],
