@@ -1,10 +1,56 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class OnTheWayLettersPage extends StatelessWidget {
+class OnTheWayLettersPage extends StatefulWidget {
   const OnTheWayLettersPage({super.key});
+
+  @override
+  State<OnTheWayLettersPage> createState() => _OnTheWayLettersPageState();
+}
+
+class _OnTheWayLettersPageState extends State<OnTheWayLettersPage> {
+  late Future<QuerySnapshot> _lettersFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _lettersFuture = _getLetters();
+    _setupFirebaseMessaging();
+  }
+
+  Future<void> _setupFirebaseMessaging() async {
+    final messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission();
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      String? token = await messaging.getToken();
+      if (token != null) {
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .set({'fcmToken': token}, SetOptions(merge: true));
+        }
+      }
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        print('Got a message whilst in the foreground!');
+        print('Message data: ${message.data}');
+
+        if (message.notification != null) {
+          print('Message also contained a notification: ${message.notification}');
+          // Show the notification to the user
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message.notification!.body ?? '')),
+          );
+        }
+      });
+    }
+  }
 
   Future<QuerySnapshot> _getLetters() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -21,50 +67,48 @@ class OnTheWayLettersPage extends StatelessWidget {
   }
 
   Future<void> _deleteLetter(BuildContext context, String letterId) async {
-  final confirm = await showDialog<bool>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Confirm Deletion'),
-        content: const Text('Are you sure you want to delete this letter?'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel')
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Delete')
-          )
-        ],
-      );
-    }
-  );
+    final confirm = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Confirm Deletion'),
+            content: const Text('Are you sure you want to delete this letter?'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('Cancel')),
+              TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('Delete'))
+            ],
+          );
+        });
 
-  if (confirm == true) {
-    try {
-      await FirebaseFirestore.instance
-          .collection('letters')
-          .doc(letterId)
-          .delete();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Letter deleted successfully'))
-      );
-      print('Letter deleted successfully: $letterId');  // Add this line for logging
-    } catch (e) {
-      print('Error deleting letter: $e');  // Add this line for logging
-      String errorMessage = 'Failed to delete letter';
-      if (e is FirebaseException) {
-        errorMessage += ': ${e.code} - ${e.message}';
-      } else {
-        errorMessage += ': $e';
+    if (confirm == true) {
+      try {
+        await FirebaseFirestore.instance
+            .collection('letters')
+            .doc(letterId)
+            .delete();
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Letter deleted successfully')));
+        print('Letter deleted successfully: $letterId');
+        setState(() {
+          _lettersFuture = _getLetters();
+        });
+      } catch (e) {
+        print('Error deleting letter: $e');
+        String errorMessage = 'Failed to delete letter';
+        if (e is FirebaseException) {
+          errorMessage += ': ${e.code} - ${e.message}';
+        } else {
+          errorMessage += ': $e';
+        }
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(errorMessage)));
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage))
-      );
     }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +124,7 @@ class OnTheWayLettersPage extends StatelessWidget {
         backgroundColor: const Color(0xFFE57373),
       ),
       body: FutureBuilder<QuerySnapshot>(
-        future: _getLetters(),
+        future: _lettersFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -201,7 +245,7 @@ class LetterDetailsPage extends StatelessWidget {
             const SizedBox(height: 20),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.all(20),
+                width: double.infinity, // Ensure full width
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(15),
@@ -214,6 +258,7 @@ class LetterDetailsPage extends StatelessWidget {
                   ],
                 ),
                 child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(20),
                   child: Text(
                     letterContent,
                     style: GoogleFonts.poppins(

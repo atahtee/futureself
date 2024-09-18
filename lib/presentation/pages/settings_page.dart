@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:futureme/auth/auth_service.dart';
 import 'package:futureme/presentation/pages/account_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  bool _notificationsEnabled = true;
+  bool _hapticsEnabled = true;
   Future<void> sendEmail() async {
     final Uri emailUri = Uri(
       scheme: 'mailto',
       path: 'atatisam14@gmail.com',
-      queryParameters: {'subject': 'Hello from Flutter!'},
+      queryParameters: {'subject': 'FutureSelf Application!'},
     );
 
     try {
@@ -87,7 +97,6 @@ class SettingsPage extends StatelessWidget {
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(fontSize: 15),
           ),
-          image: Image.asset('assets/app_icon.png', height: 100),
           submitButtonText: 'SUBMIT',
           commentHint: 'Tell us your thoughts...',
           starSize: 30,
@@ -109,8 +118,6 @@ class SettingsPage extends StatelessWidget {
       ),
     );
   }
-
-  const SettingsPage({super.key});
 
   void getAccountDetails(BuildContext context) {
     final auth = AuthService();
@@ -161,11 +168,20 @@ class SettingsPage extends StatelessWidget {
                 _buildSection(
                   "App Settings",
                   [
-                    _buildSettingItem(
-                        Icons.notifications, "Notifications", true),
+                     _buildSwitchSettingItem(
+                        Icons.notifications, "Notifications", _notificationsEnabled, (value) {
+                      setState(() {
+                        _notificationsEnabled = value;
+                      });
+                    }),
                     _buildSettingItem(Icons.palette, "Appearance", false),
                     _buildSettingItem(Icons.language, "Language", false),
-                    _buildSettingItem(Icons.vibration, "Haptics", true),
+                    _buildSwitchSettingItem(
+                        Icons.vibration, "Haptics", _hapticsEnabled, (value) {
+                      setState(() {
+                        _hapticsEnabled = value;
+                      });
+                    }),
                     _buildSettingItem(
                         Icons.calendar_today, "Week Start On", false),
                   ],
@@ -193,9 +209,16 @@ class SettingsPage extends StatelessWidget {
                     () {},
                     "1.0.0+1",
                   ),
-                  _buildReviewItem(Icons.article, "Terms of Service", () => _launchURL('https://futureself-three.vercel.app/terms')),
-
-                  _buildReviewItem(Icons.gavel, "Privacy Policy", () => _launchURL('https://futureself-three.vercel.app/privacy-policy')),
+                  _buildReviewItem(
+                      Icons.article,
+                      "Terms of Service",
+                      () => _launchURL(
+                          'https://futureself-three.vercel.app/terms')),
+                  _buildReviewItem(
+                      Icons.gavel,
+                      "Privacy Policy",
+                      () => _launchURL(
+                          'https://futureself-three.vercel.app/privacy-policy')),
                 ]),
                 const SizedBox(
                   height: 24,
@@ -269,6 +292,25 @@ class SettingsPage extends StatelessWidget {
               activeColor: const Color(0xFFE57373),
             )
           : const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+    );
+  }
+
+  Widget _buildSwitchSettingItem(IconData icon, String title, bool currentValue,
+      Function(bool) onchanged) {
+    return ListTile(
+      leading: Icon(icon, color: const Color(0xFFE57373),),
+      title: Text(
+        title,
+        style: GoogleFonts.poppins(
+          fontSize: 16,
+          fontWeight: FontWeight.w500
+        ),
+      ),
+      trailing: Switch(
+        value: currentValue, 
+        onChanged: onchanged,
+        activeColor: const Color(0xFFE57373),
+        ),
     );
   }
 
