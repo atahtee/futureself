@@ -43,7 +43,7 @@ class _OnTheWayLettersPageState extends State<OnTheWayLettersPage> {
 
         if (message.notification != null) {
           print('Message also contained a notification: ${message.notification}');
-          // Show the notification to the user
+          
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(message.notification!.body ?? '')),
           );

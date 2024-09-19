@@ -14,17 +14,47 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  void signIn(BuildContext context) async {
+  void signIn(BuildContext context, TextEditingController emailController,
+      TextEditingController passwordController) async {
     final authService = AuthService();
     try {
       await authService.signInWithEmailPassword(
           emailController.text, passwordController.text);
     } catch (e) {
+      String errorMessage = _handleSignInError(e);
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
-                title: Text(e.toString()),
+                title: const Text(
+                  "Sign In Failed",
+                  style:
+                      TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                ),
+                content: Text(
+                  errorMessage,
+                  style: const TextStyle(fontSize: 16),
+                ),
+                actions: [
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text(
+                        "Ok",
+                        style: TextStyle(color: Color(0xFFE57373)),
+                      ))
+                ],
               ));
+    }
+  }
+
+  String _handleSignInError(dynamic error) {
+    if (error.toString().contains("user-not-found")) {
+      return "No User found with this email, please sign up";
+    } else if (error.toString().contains("wrong-password")) {
+      return "The password entered is incorrect. Please try again";
+    } else if (error.toString().contains("network-request-failed")) {
+      return "Network error. Please check your internet connection";
+    } else {
+      return "An unexpected error occurred. Please try again later";
     }
   }
 
@@ -83,7 +113,7 @@ class _SignInPageState extends State<SignInPage> {
                             elevation: 2,
                           ),
                           onPressed: () {
-                            signIn(context);
+                            signIn(context, emailController, passwordController);
                           },
                           child: Text(
                             "Sign In",
