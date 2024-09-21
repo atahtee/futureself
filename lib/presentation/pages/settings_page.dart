@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:futureme/auth/auth_service.dart';
 import 'package:futureme/presentation/pages/account_page.dart';
 import 'package:futureme/presentation/pages/prompts_page.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:rating_dialog/rating_dialog.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -35,6 +35,21 @@ class _SettingsPageState extends State<SettingsPage> {
       print('Error launching email app: $e');
       throw 'Could not launch email app';
     }
+  }
+
+  void _shareApp() {
+    final String appName = "Future Me";
+    final String appDescription = "Send messages to your future self!";
+    // final String appStoreLink = "https://apps.apple.com/your-app-store-link";
+    // final String playStoreLink = "https://play.google.com/store/your-play-store-link";
+    final String futureSite = 'https://futureself-three.vercel.app/';
+
+    String shareText = "Check out $appName - $appDescription\n\n";
+    // shareText += "Download for iOS: $appStoreLink\n";
+    // shareText += "Download for Android: $playStoreLink";
+    shareText += "Link for the site: $futureSite";
+
+    Share.share(shareText, subject: "Share $appName with your friends!");
   }
 
   Future<void> sendFeedbackEmail(double rating, String comment) async {
@@ -175,8 +190,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         _notificationsEnabled = value;
                       });
                     }),
-                    _buildActionItem(
-                        Icons.palette, "Writing Prompts",  () {
+                    _buildActionItem(Icons.palette, "Writing Prompts", () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -203,7 +217,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     _buildActionItem(Icons.star, "Rate the Application", () {
                       _showRatingDialog(context);
                     }),
-                    _buildActionItem(Icons.share, "Share with Friends", () {}),
+                    _buildActionItem(
+                        Icons.share, "Share with Friends", _shareApp),
                   ],
                 ),
                 const SizedBox(
