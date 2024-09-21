@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:futureme/auth/auth_service.dart';
 import 'package:futureme/auth/sign_in.dart';
@@ -18,53 +19,79 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController usernameController = TextEditingController();
   bool isLoading = false;
 
-  void register(BuildContext context) async {
-    final auth = AuthService();
+  
+void register(BuildContext context) async {
+  final auth = AuthService();
 
-    if (passwordController.text == confirmPasswordController.text) {
-      setState(() {
-        isLoading = true;
-      });
-      try {
-        await auth.signUpWithEmailPassword(
-            emailController.text, passwordController.text, usernameController.text);
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const MainScreen()),
-        );
-      } catch (e) {
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  title: const Text('Error signing up'),
-                  content: Text(e.toString()),
-                  actions: [
-                    TextButton(
-                      child: const Text('OK'),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                  ],
-                ));
-      } finally {
-        if (mounted) {
-          setState(() {
-            isLoading = false;
-          });
-        }
-      }
-    } else {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: const Text('Error'),
-                content: const Text('Passwords don\'t match'),
-                actions: [
-                  TextButton(
-                    child: const Text('OK'),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              ));
+  if (emailController.text.isEmpty || passwordController.text.isEmpty || usernameController.text.isEmpty) {
+    _showErrorDialog(context, 'Error', 'Please fill in all fields.');
+    return;
+  }
+
+  if (passwordController.text != confirmPasswordController.text) {
+    _showErrorDialog(context, 'Error', 'Passwords don\'t match');
+    return;
+  }
+
+  setState(() {
+    isLoading = true;
+  });
+
+  try {
+    await auth.signUpWithEmailPassword(
+      emailController.text,
+      passwordController.text,
+      usernameController.text,
+    );
+    
+    if (mounted) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainScreen()),
+      );
     }
+  } on FirebaseAuthException catch (e) {
+    String errorMessage;
+    switch (e.code) {
+      case 'weak-password':
+        errorMessage = 'The password provided is too weak.';
+        break;
+      case 'email-already-in-use':
+        errorMessage = 'An account already exists for that email.';
+        break;
+      case 'invalid-email':
+        errorMessage = 'The email address is not valid.';
+        break;
+      default:
+        errorMessage = 'An error occurred during sign up. Please try again.';
+    }
+    _showErrorDialog(context, 'Sign Up Error', errorMessage);
+  } catch (e) {
+    _showErrorDialog(context, 'Unexpected Error', 'An unexpected error occurred. Please try again later.');
+  } finally {
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+}
+
+
+  _showErrorDialog(BuildContext context, String title, String message) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text(title),
+              content: Text(message),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop,
+                    child: TextButton(
+                      onPressed: Navigator.of(context).pop,
+                    child: Text('Okay'),
+                    ))
+              ],
+            ));
   }
 
   @override
@@ -226,10 +253,8 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const SignInPage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const SignInPage()));
             },
           ),
         ],

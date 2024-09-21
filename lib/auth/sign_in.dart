@@ -14,7 +14,8 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  void signIn(BuildContext context, TextEditingController emailController,
+  void signIn(BuildContext context, 
+  TextEditingController emailController,
       TextEditingController passwordController) async {
     final authService = AuthService();
     try {

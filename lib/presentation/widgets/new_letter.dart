@@ -174,30 +174,6 @@ class _NewLetterTabState extends State<NewLetterTab> {
                                       ),
                                       )
                                     )
-                                    // child: TimePickerSpinnerPopUp(
-                                    //   mode: CupertinoDatePickerMode.date,
-                                    //   initTime: initialDate,
-                                    //   minTime: initialDate,
-                                    //   maxTime: DateTime.now()
-                                    //       .add(const Duration(days: 365 * 10)),
-                                    //   barrierColor: Colors.black12,
-                                    //   minuteInterval: 1,
-                                    //   padding: const EdgeInsets.symmetric(
-                                    //       horizontal: 12, vertical: 15),
-                                    //   cancelText: 'Cancel',
-                                    //   confirmText: 'Confirm',
-                                    //   pressType: PressType.singlePress,
-                                    //   timeFormat: 'dd MMM yyyy',
-                                    //   onChange: (dateTime) {
-                                    //     setState(() {
-                                    //       _selectedDate = dateTime;
-                                    //     });
-                                    //   },
-                                    //   textStyle: GoogleFonts.poppins(
-                                    //     fontSize: 16,
-                                    //     color: Colors.black87,
-                                    //   ),
-                                    // ),
                                     ),
                               ),
                             ],
@@ -219,7 +195,7 @@ class _NewLetterTabState extends State<NewLetterTab> {
                       ),
                       onPressed: _sendToFuture,
                       child: Text(
-                        "Send to Future",
+                        "Send to the future",
                         style: GoogleFonts.poppins(fontSize: 18),
                       ),
                     ),

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:futureme/auth/sign_in.dart';
 
 class UserDeletionService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -144,7 +145,8 @@ class UserDeletionService {
               child: Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.of(context).pushReplacementNamed('/login');
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => SignInPage()));
               },
             ),
           ],
