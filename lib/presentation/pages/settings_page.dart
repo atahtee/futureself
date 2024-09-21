@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:futureme/auth/auth_service.dart';
 import 'package:futureme/presentation/pages/account_page.dart';
+import 'package:futureme/presentation/pages/prompts_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:rating_dialog/rating_dialog.dart';
@@ -168,13 +169,19 @@ class _SettingsPageState extends State<SettingsPage> {
                 _buildSection(
                   "App Settings",
                   [
-                     _buildSwitchSettingItem(
-                        Icons.notifications, "Notifications", _notificationsEnabled, (value) {
+                    _buildSwitchSettingItem(Icons.notifications,
+                        "Notifications", _notificationsEnabled, (value) {
                       setState(() {
                         _notificationsEnabled = value;
                       });
                     }),
-                    _buildSettingItem(Icons.palette, "Appearance", false),
+                    _buildActionItem(
+                        Icons.palette, "Writing Prompts",  () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PromptsPage()));
+                    }),
                     _buildSettingItem(Icons.language, "Language", false),
                     _buildSwitchSettingItem(
                         Icons.vibration, "Haptics", _hapticsEnabled, (value) {
@@ -298,19 +305,19 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _buildSwitchSettingItem(IconData icon, String title, bool currentValue,
       Function(bool) onchanged) {
     return ListTile(
-      leading: Icon(icon, color: const Color(0xFFE57373),),
+      leading: Icon(
+        icon,
+        color: const Color(0xFFE57373),
+      ),
       title: Text(
         title,
-        style: GoogleFonts.poppins(
-          fontSize: 16,
-          fontWeight: FontWeight.w500
-        ),
+        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
       ),
       trailing: Switch(
-        value: currentValue, 
+        value: currentValue,
         onChanged: onchanged,
         activeColor: const Color(0xFFE57373),
-        ),
+      ),
     );
   }
 
