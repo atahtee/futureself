@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:futureme/auth/auth_service.dart';
 import 'package:futureme/auth/sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:futureme/presentation/pages/main_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -19,63 +21,72 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController usernameController = TextEditingController();
   bool isLoading = false;
 
-  
-void register(BuildContext context) async {
-  final auth = AuthService();
+  void register(BuildContext context) async {
+    final auth = AuthService();
 
-  if (emailController.text.isEmpty || passwordController.text.isEmpty || usernameController.text.isEmpty) {
-    _showErrorDialog(context, 'Error', 'Please fill in all fields.');
-    return;
-  }
+    if (emailController.text.isEmpty ||
+        passwordController.text.isEmpty ||
+        usernameController.text.isEmpty) {
+      _showErrorDialog(context, 'Error', 'Please fill in all fields.');
+      return;
+    }
 
-  if (passwordController.text != confirmPasswordController.text) {
-    _showErrorDialog(context, 'Error', 'Passwords don\'t match');
-    return;
-  }
+    if (passwordController.text != confirmPasswordController.text) {
+      _showErrorDialog(context, 'Error', 'Passwords don\'t match');
+      return;
+    }
 
-  setState(() {
-    isLoading = true;
-  });
+    setState(() {
+      isLoading = true;
+    });
 
-  try {
-    await auth.signUpWithEmailPassword(
-      emailController.text,
-      passwordController.text,
-      usernameController.text,
-    );
-    
-    if (mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const MainScreen()),
+    try {
+      await auth.signUpWithEmailPassword(
+        emailController.text,
+        passwordController.text,
+        usernameController.text,
       );
-    }
-  } on FirebaseAuthException catch (e) {
-    String errorMessage;
-    switch (e.code) {
-      case 'weak-password':
-        errorMessage = 'The password provided is too weak.';
-        break;
-      case 'email-already-in-use':
-        errorMessage = 'An account already exists for that email.';
-        break;
-      case 'invalid-email':
-        errorMessage = 'The email address is not valid.';
-        break;
-      default:
-        errorMessage = 'An error occurred during sign up. Please try again.';
-    }
-    _showErrorDialog(context, 'Sign Up Error', errorMessage);
-  } catch (e) {
-    _showErrorDialog(context, 'Unexpected Error', 'An unexpected error occurred. Please try again later.');
-  } finally {
-    if (mounted) {
-      setState(() {
-        isLoading = false;
-      });
+
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const MainScreen()),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      switch (e.code) {
+        case 'weak-password':
+          errorMessage = 'The password provided is too weak.';
+          break;
+        case 'email-already-in-use':
+          errorMessage = 'An account already exists for that email.';
+          break;
+        case 'invalid-email':
+          errorMessage = 'The email address is not valid.';
+          break;
+        default:
+          errorMessage = 'An error occurred during sign up. Please try again.';
+      }
+      _showErrorDialog(context, 'Sign Up Error', errorMessage);
+    } catch (e) {
+      _showErrorDialog(context, 'Unexpected Error',
+          'An unexpected error occurred. Please try again later.');
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
-}
 
+  void _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   _showErrorDialog(BuildContext context, String title, String message) {
     showDialog(
@@ -88,7 +99,7 @@ void register(BuildContext context) async {
                     onPressed: () => Navigator.of(context).pop,
                     child: TextButton(
                       onPressed: Navigator.of(context).pop,
-                    child: Text('Okay'),
+                      child: Text('Okay'),
                     ))
               ],
             ));
@@ -97,75 +108,95 @@ void register(BuildContext context) async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          color: Color(0xFFF3E9E3),
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const SizedBox(height: 60),
-                        Text(
-                          "Create Account",
-                          style: GoogleFonts.poppins(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFFE57373),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          "Sign up to start your journey",
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.grey[600],
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 48),
-                        _buildTextField(
-                            "Username", Icons.person, usernameController),
-                        const SizedBox(height: 16),
-                        _buildTextField("Email", Icons.email, emailController),
-                        const SizedBox(height: 16),
-                        _buildTextField(
-                            "Password", Icons.lock, passwordController,
-                            isPassword: true),
-                        const SizedBox(height: 16),
-                        _buildTextField("Confirm Password", Icons.lock,
-                            confirmPasswordController,
-                            isPassword: true),
-                        const SizedBox(height: 24),
-                        _buildSignUpButton(),
-                        const SizedBox(height: 16),
-                        Text(
-                          "By signing up, you agree to our Terms of Service and Privacy Policy",
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            color: Colors.grey[600],
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                _buildSignInPrompt(),
-              ],
+        body: Container(
+            decoration: const BoxDecoration(
+              color: Color(0xFFF3E9E3),
             ),
-          ),
-        ),
-      ),
-    );
+            child: SafeArea(
+                child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const SizedBox(height: 60),
+                            Text(
+                              "Create Account",
+                              style: GoogleFonts.poppins(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFFE57373),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              "Sign up to start your journey",
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                color: Colors.grey[600],
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 48),
+                            _buildTextField(
+                                "Username", Icons.person, usernameController),
+                            const SizedBox(height: 16),
+                            _buildTextField(
+                                "Email", Icons.email, emailController),
+                            const SizedBox(height: 16),
+                            _buildTextField(
+                                "Password", Icons.lock, passwordController,
+                                isPassword: true),
+                            const SizedBox(height: 16),
+                            _buildTextField("Confirm Password", Icons.lock,
+                                confirmPasswordController,
+                                isPassword: true),
+                            const SizedBox(height: 24),
+                            _buildSignUpButton(),
+                            const SizedBox(height: 16),
+                            Center(
+                              child: RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    color: Colors.grey[600],
+                                  ),
+                                  children: [
+                                    const TextSpan(
+                                      text: 'By signing up, you agree to our ',
+                                    ),
+                                    TextSpan(
+                                      text: 'Terms of Service',
+                                      style: const TextStyle(
+                                        color: Colors.blue, // Link color
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          _launchURL(
+                                              'https://futureself-three.vercel.app/terms');
+                                        },
+                                    ),
+                                    const TextSpan(
+                                      text: ' and Privacy Policy',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            _buildSignInPrompt(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]),
+            ))));
   }
 
   Widget _buildTextField(
