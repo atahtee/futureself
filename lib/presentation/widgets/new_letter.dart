@@ -209,3 +209,4 @@ class _NewLetterTabState extends State<NewLetterTab> {
     );
   }
 }
+

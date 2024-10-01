@@ -196,15 +196,15 @@ class _SettingsPageState extends State<SettingsPage> {
                           MaterialPageRoute(
                               builder: (context) => PromptsPage()));
                     }),
-                    _buildSettingItem(Icons.language, "Language", false),
+                    // _buildSettingItem(Icons.language, "Language", false),
                     _buildSwitchSettingItem(
                         Icons.vibration, "Haptics", _hapticsEnabled, (value) {
                       setState(() {
                         _hapticsEnabled = value;
                       });
                     }),
-                    _buildSettingItem(
-                        Icons.calendar_today, "Week Start On", false),
+                    // _buildSettingItem(
+                    //     Icons.calendar_today, "Week Start On", false),
                   ],
                 ),
                 const SizedBox(height: 24),
