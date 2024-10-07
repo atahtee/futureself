@@ -229,7 +229,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     Icons.info_outline,
                     "App version",
                     () {},
-                    "1.0.0+1",
+                    "1.0.0+4",
                   ),
                   _buildReviewItem(
                       Icons.article,
