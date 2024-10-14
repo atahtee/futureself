@@ -184,12 +184,12 @@ class _SettingsPageState extends State<SettingsPage> {
                 _buildSection(
                   "App Settings",
                   [
-                    _buildSwitchSettingItem(Icons.notifications,
-                        "Notifications", _notificationsEnabled, (value) {
-                      setState(() {
-                        _notificationsEnabled = value;
-                      });
-                    }),
+                    // _buildSwitchSettingItem(Icons.notifications,
+                    //     "Notifications", _notificationsEnabled, (value) {
+                    //   setState(() {
+                    //     _notificationsEnabled = value;
+                    //   });
+                    // }),
                     _buildActionItem(Icons.palette, "Writing Prompts", () {
                       Navigator.push(
                           context,
@@ -197,12 +197,12 @@ class _SettingsPageState extends State<SettingsPage> {
                               builder: (context) => PromptsPage()));
                     }),
                     // _buildSettingItem(Icons.language, "Language", false),
-                    _buildSwitchSettingItem(
-                        Icons.vibration, "Haptics", _hapticsEnabled, (value) {
-                      setState(() {
-                        _hapticsEnabled = value;
-                      });
-                    }),
+                    // _buildSwitchSettingItem(
+                    //     Icons.vibration, "Haptics", _hapticsEnabled, (value) {
+                    //   setState(() {
+                    //     _hapticsEnabled = value;
+                    //   });
+                    // }),
                     // _buildSettingItem(
                     //     Icons.calendar_today, "Week Start On", false),
                   ],
@@ -229,7 +229,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     Icons.info_outline,
                     "App version",
                     () {},
-                    "1.0.0+4",
+                    "1.0.0+5",
                   ),
                   _buildReviewItem(
                       Icons.article,
