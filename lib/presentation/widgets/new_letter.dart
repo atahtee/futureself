@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +15,7 @@ class NewLetterTab extends StatefulWidget {
 class _NewLetterTabState extends State<NewLetterTab> {
   final TextEditingController _letterController = TextEditingController();
   DateTime _selectedDate = DateTime.now().add(const Duration(days: 30));
+
   String? username;
 
   @override
@@ -41,13 +43,16 @@ class _NewLetterTabState extends State<NewLetterTab> {
 
     if (user != null) {
       final letterContent = _letterController.text;
+      String? token = await FirebaseMessaging.instance.getToken();
 
-      if (letterContent.isNotEmpty) {
+      if (letterContent.isNotEmpty && token != null) {
         await FirebaseFirestore.instance.collection('letters').add({
           'userId': user.uid,
           'letterContent': letterContent,
           'deliveryDate': _selectedDate,
-          'createdAt': Timestamp.now()
+          'createdAt': Timestamp.now(),
+          'fcmToken': token,
+          'isDelivered': false
         });
 
         _letterController.clear();

@@ -7,7 +7,6 @@ import 'package:futureme/notifications/firebase_api.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseApi().initNotifications();
   runApp(const MyApp());
 }
 
@@ -16,6 +15,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future.microtask(() => FirebaseApi().initNotifications(context));
+
     return MaterialApp(
       title: 'Futureself',
       debugShowCheckedModeBanner: false,

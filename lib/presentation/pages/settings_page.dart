@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:futureme/auth/auth_service.dart';
+import 'package:futureme/notifications/firebase_api.dart';
 import 'package:futureme/presentation/pages/account_page.dart';
+import 'package:futureme/presentation/pages/how_it_works.dart';
 import 'package:futureme/presentation/pages/prompts_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rating_dialog/rating_dialog.dart';
@@ -16,6 +18,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool _notificationsEnabled = true;
+  final FirebaseApi _firebaseApi = FirebaseApi();
   bool _hapticsEnabled = true;
   Future<void> sendEmail() async {
     final Uri emailUri = Uri(
@@ -35,6 +38,18 @@ class _SettingsPageState extends State<SettingsPage> {
       print('Error launching email app: $e');
       throw 'Could not launch email app';
     }
+  }
+  @override
+  void initState() {
+    super.initState();
+    _loadNotificationSetting();
+  }
+
+  Future<void> _loadNotificationSetting() async {
+    final enabled = await _firebaseApi.areNotificationsEnabled();
+    setState(() {
+      _notificationsEnabled = enabled;
+    });
   }
 
   void _shareApp() {
@@ -184,17 +199,23 @@ class _SettingsPageState extends State<SettingsPage> {
                 _buildSection(
                   "App Settings",
                   [
-                    // _buildSwitchSettingItem(Icons.notifications,
-                    //     "Notifications", _notificationsEnabled, (value) {
-                    //   setState(() {
-                    //     _notificationsEnabled = value;
-                    //   });
-                    // }),
+                    _buildSwitchSettingItem(Icons.notifications,
+                        "Notifications", _notificationsEnabled, (value) {
+                      setState(() {
+                        _notificationsEnabled = value;
+                      });
+                    }),
                     _buildActionItem(Icons.palette, "Writing Prompts", () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => PromptsPage()));
+                    }),
+                    _buildActionItem(Icons.work, "How it works", () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HowItWorks()));
                     }),
                     // _buildSettingItem(Icons.language, "Language", false),
                     // _buildSwitchSettingItem(
@@ -330,7 +351,13 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       trailing: Switch(
         value: currentValue,
-        onChanged: onchanged,
+        onChanged: (value) async {
+          await _firebaseApi.toggleNotifications(value);
+          setState(() {
+            _notificationsEnabled = value;
+          });
+          onchanged(value);
+        },
         activeColor: const Color(0xFFE57373),
       ),
     );

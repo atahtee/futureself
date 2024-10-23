@@ -43,7 +43,7 @@ class _OnTheWayLettersPageState extends State<OnTheWayLettersPage> {
 
         if (message.notification != null) {
           print('Message also contained a notification: ${message.notification}');
-          
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(message.notification!.body ?? '')),
           );
@@ -245,7 +245,7 @@ class LetterDetailsPage extends StatelessWidget {
             const SizedBox(height: 20),
             Expanded(
               child: Container(
-                width: double.infinity, // Ensure full width
+                width: double.infinity, 
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(15),
