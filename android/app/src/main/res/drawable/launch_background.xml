@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@android:color/pink" /> 
+    <!-- Background color -->
+    <item android:drawable="@android:color/pink" />
+
+    <!-- Splash image -->
     <item>
         <bitmap
-            android:gravity="center"
-            android:src="@drawable/launch_image" /> 
+            android:gravity="fill_horizontal|fill_vertical"
+            android:src="@mipmap/futureself"/>
     </item>
 </layer-list>

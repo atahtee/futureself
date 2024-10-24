@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:604119566392:android:885b929b39de791617becd",
+        "mobilesdk_app_id": "1:604119566392:android:881b61eb231d105217becd",
         "android_client_info": {
-          "package_name": "com.app.futureme"
+          "package_name": "com.app.futureself"
         }
       },
       "oauth_client": [],
