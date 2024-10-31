@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:futureme/auth/auth_service.dart';
 import 'package:futureme/notifications/firebase_api.dart';
 import 'package:futureme/presentation/pages/account_page.dart';
+import 'package:futureme/presentation/pages/faq_page.dart';
 import 'package:futureme/presentation/pages/how_it_works.dart';
+import 'package:futureme/presentation/pages/privacy_policy.dart';
 import 'package:futureme/presentation/pages/prompts_page.dart';
+import 'package:futureme/presentation/pages/terms.dart';
+import 'package:futureme/presentation/pages/whats_coming.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 import 'package:share_plus/share_plus.dart';
@@ -39,6 +43,7 @@ class _SettingsPageState extends State<SettingsPage> {
       throw 'Could not launch email app';
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -205,6 +210,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         _notificationsEnabled = value;
                       });
                     }),
+                    _buildActionItem(Icons.alarm_add_outlined, "What's coming",
+                        () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WhatsComing()));
+                    }),
                     _buildActionItem(Icons.palette, "Writing Prompts", () {
                       Navigator.push(
                           context,
@@ -229,39 +241,41 @@ class _SettingsPageState extends State<SettingsPage> {
                   ],
                 ),
                 const SizedBox(height: 24),
-                _buildSection(
-                  "More",
-                  [
-                    _buildActionItem(Icons.feedback, "Send Feedback", () {
-                      sendEmail();
-                    }),
-                    _buildActionItem(Icons.star, "Rate the Application", () {
-                      _showRatingDialog(context);
-                    }),
-                    _buildActionItem(
-                        Icons.share, "Share with Friends", _shareApp),
-                  ],
-                ),
+                // _buildSection(
+                //   "More",
+                //   [
+                //     _buildActionItem(Icons.feedback, "Send Feedback", () {
+                //       sendEmail();
+                //     }),
+                //     _buildActionItem(Icons.star, "Rate the Application", () {
+                //       _showRatingDialog(context);
+                //     }),
+                //     _buildActionItem(
+                //         Icons.share, "Share with Friends", _shareApp),
+                //   ],
+                // ),
                 const SizedBox(
                   height: 24,
                 ),
                 _buildSection("Reviews", [
                   _buildReviewItem(
                     Icons.info_outline,
-                    "App version",
-                    () {},
-                    "1.0.0+5",
+                    "FAQ",
+                    () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => FaqPage()));
+                    },
                   ),
-                  _buildReviewItem(
-                      Icons.article,
-                      "Terms of Service",
-                      () => _launchURL(
-                          'https://futureself-three.vercel.app/terms')),
-                  _buildReviewItem(
-                      Icons.gavel,
-                      "Privacy Policy",
-                      () => _launchURL(
-                          'https://futureself-three.vercel.app/privacy-policy')),
+                  _buildReviewItem(Icons.article, "Terms of Service", () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Terms()));
+                  }),
+                  _buildReviewItem(Icons.gavel, "Privacy Policy", () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PrivacyPolicy()));
+                  }),
                 ]),
                 const SizedBox(
                   height: 24,

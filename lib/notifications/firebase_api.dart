@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // Check notification preference before handling background message
   final prefs = await SharedPreferences.getInstance();
   final notificationsEnabled = prefs.getBool('notifications_enabled') ?? true;
 
@@ -70,24 +69,20 @@ class FirebaseApi {
       criticalAlert: true,
     );
 
-    // Initialize local notifications
     await _initializeLocalNotifications(context);
 
-    // Get and print the FCM token
     final fCMToken = await _firebaseMessaging.getToken();
     print('FCM Token: $fCMToken');
 
-    // Handle token refresh
     FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
       _updateFCMToken(newToken);
     });
 
-    // Set up notification handlers
     await _setupNotificationHandlers(context);
   }
 
   Future<void> _initializeLocalNotifications(BuildContext context) async {
-    const android = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const android = AndroidInitializationSettings('@drawable/ic_launcher');
     const iOS = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -126,7 +121,6 @@ class FirebaseApi {
       _handleInitialMessage(initialMessage);
     }
 
-    // Handle notifications when app is opened from background
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       _handleMessageOpenedApp(message, context);
     });
