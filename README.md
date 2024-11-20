@@ -21,19 +21,19 @@ A beautifully crafted mobile application that lets you write letters to your fut
 <table>
   <tr>
     <td>
-      <img src=".assets/signin_page.jpg" width="200" style="border-radius: 10px" alt="SignIn page"/>
+      <img src="./assets/signin_page.jpg" width="200" style="border-radius: 10px" alt="SignIn page"/>
     </td>
     <td>
-      <img src=".assets/homepage.jpg" width="200" style="border-radius: 10px" alt="Compose letter"/>
+      <img src="./assets/homepage.jpg" width="200" style="border-radius: 10px" alt="Compose letter"/>
     </td>
     <td>
-      <img src=".assets/delivered_letters.jpg" width="200" style="border-radius: 10px" alt="Delivered Letters"/>
+      <img src="./assets/delivered_letters.jpg" width="200" style="border-radius: 10px" alt="Delivered Letters"/>
     </td>
     <td>
-      <img src=".assets/letters_ontheway.jpg" width="200" style="border-radius: 10px" alt="Letters on the way"/>
+      <img src="./assets/letters_ontheway.jpg" width="200" style="border-radius: 10px" alt="Letters on the way"/>
     </td>
     <td>
-      <img src=".assets/settings_page.jpg" width="200" style="border-radius: 10px" alt="Settings page"/>
+      <img src="./assets/settings_page.jpg" width="200" style="border-radius: 10px" alt="Settings page"/>
     </td>
   </tr>
   <tr>
