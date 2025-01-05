@@ -41,9 +41,9 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Text(
-                    _user != null ? 'Welcome ${_user?.displayName ?? 'No email'}' : ('Dear futureself'),
+                    _user != null ? 'Welcome ${_user?.displayName ?? 'No email displayed'}' : ('Dear futureself'),
                     style: GoogleFonts.poppins(
-                      fontSize: 18,
+                      fontSize: 8,
                       fontWeight: FontWeight.w600,
                       color: const Color(0xFFE57373),
                       letterSpacing: 1.2,
