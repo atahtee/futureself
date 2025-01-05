@@ -60,7 +60,6 @@ class FirebaseApi {
     if (!notificationsEnabled) return;
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-    // Request notification permissions
     await _firebaseMessaging.requestPermission(
       alert: true,
       badge: true,
@@ -101,7 +100,6 @@ class FirebaseApi {
       },
     );
 
-    // Create notification channel for Android
     if (Platform.isAndroid) {
       await _localNotifications
           .resolvePlatformSpecificImplementation<
@@ -111,10 +109,8 @@ class FirebaseApi {
   }
 
   Future<void> _setupNotificationHandlers(BuildContext context) async {
-    // Handle foreground messages
     FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
 
-    // Handle notifications when app is opened from terminated state
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
@@ -130,7 +126,6 @@ class FirebaseApi {
     RemoteNotification? notification = message.notification;
     AndroidNotification? android = message.notification?.android;
 
-    // Show notification when app is in the foreground
     if (notification != null) {
       await _localNotifications.show(
         notification.hashCode,
@@ -163,7 +158,6 @@ class FirebaseApi {
   void _handleMessageOpenedApp(RemoteMessage message, BuildContext context) {
     print('App opened from background state with message: ${message.data}');
 
-    // Navigate to DeliveredLettersTab when notification is tapped
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => DeliveredLettersTab()),
@@ -172,6 +166,5 @@ class FirebaseApi {
 
   Future<void> _updateFCMToken(String token) async {
     print('FCM Token updated: $token');
-    // You can store the token in Firestore or your backend for further use
   }
 }
