@@ -43,10 +43,10 @@ class _HomePageState extends State<HomePage> {
                   child: Text(
                     _user != null ? 'Welcome ${_user?.displayName ?? 'No email displayed'}' : ('Dear futureself'),
                     style: GoogleFonts.poppins(
-                      fontSize: 8,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: const Color(0xFFE57373),
-                      letterSpacing: 1.2,
+                      letterSpacing: 0.8,
                     ),
                     textAlign: TextAlign.center,
                   ),
