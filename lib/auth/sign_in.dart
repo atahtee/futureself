@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:futureme/auth/auth_service.dart';
 import 'package:futureme/auth/sign_up.dart';
+import 'package:futureme/presentation/pages/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -13,9 +17,11 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  User? _user;
 
-  void signIn(BuildContext context, 
-  TextEditingController emailController,
+  void signIn(BuildContext context, TextEditingController emailController,
       TextEditingController passwordController) async {
     final authService = AuthService();
     try {
@@ -114,7 +120,8 @@ class _SignInPageState extends State<SignInPage> {
                             elevation: 2,
                           ),
                           onPressed: () {
-                            signIn(context, emailController, passwordController);
+                            signIn(
+                                context, emailController, passwordController);
                           },
                           child: Text(
                             "Sign In",
@@ -125,6 +132,13 @@ class _SignInPageState extends State<SignInPage> {
                           ),
                         ),
                         const SizedBox(height: 16),
+                        SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: SignInButton(Buttons.google,
+                              text: 'Sign Up with Google',
+                              onPressed: _handleGoogleSignIn),
+                        ),
                         TextButton(
                           child: Text(
                             "Forgot Password?",
@@ -171,6 +185,31 @@ class _SignInPageState extends State<SignInPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        return;
+      }
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+      if (mounted) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
+      }
+    } catch (e) {
+      print('Error during Google Sign In: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to sign In: ${e.toString()}')));
+      }
+    }
   }
 
   Widget _buildTextField(

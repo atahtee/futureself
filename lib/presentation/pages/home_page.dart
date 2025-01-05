@@ -1,10 +1,30 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:futureme/presentation/widgets/delivered_letter.dart';
 import 'package:futureme/presentation/widgets/new_letter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  User? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _auth.authStateChanges().listen((event) {
+      setState(() {
+        _user = event;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +41,7 @@ class HomePage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Text(
-                    "Dear FutureSelf",
+                    _user != null ? 'Welcome ${_user?.email ?? 'No email'}' : ('Dear futureself'),
                     style: GoogleFonts.poppins(
                       fontSize: 28,
                       fontWeight: FontWeight.w600,
@@ -60,7 +80,7 @@ class HomePage extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       letterSpacing: 0.5,
                     ),
-                    unselectedLabelColor: const Color(0xFFE57373), 
+                    unselectedLabelColor: const Color(0xFFE57373),
                     labelColor: Colors.white,
                     indicatorSize: TabBarIndicatorSize.tab,
                     labelPadding: EdgeInsets.zero,
@@ -82,4 +102,30 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
+ Widget _userInfo() {
+  if (_user != null) {
+    return Text(
+      'Welcome, ${_user?.email ?? 'No email'}',
+      style: GoogleFonts.poppins(
+        fontSize: 28,
+        fontWeight: FontWeight.w600,
+        color: const Color(0xFFE57373),
+        letterSpacing: 1.2,
+      ),
+      textAlign: TextAlign.center,
+    );
+  } else {
+    return const Text('Dear Futureself',
+      style: TextStyle(
+        fontSize: 28,
+        fontWeight: FontWeight.w600,
+        color: Color(0xFFE57373),
+        letterSpacing: 1.2,
+      ),
+      textAlign: TextAlign.center,
+    );
+  }
+}
+
 }

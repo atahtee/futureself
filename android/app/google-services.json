@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "604119566392",
     "project_id": "futureself-75bc9",
-    "storage_bucket": "futureself-75bc9.appspot.com"
+    "storage_bucket": "futureself-75bc9.firebasestorage.app"
   },
   "client": [
     {
@@ -12,7 +12,12 @@
           "package_name": "com.app.futureself"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "604119566392-8su5vb2io5b1vnupjo60tb8s6nhfgb61.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD4-mvdDOssEX-WkeymsNw2qqXRvNBNibE"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "604119566392-8su5vb2io5b1vnupjo60tb8s6nhfgb61.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "604119566392-vd4k8ek3cvit9os67aog2skt29a51ugt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.futureme"
+              }
+            }
+          ]
         }
       }
     }

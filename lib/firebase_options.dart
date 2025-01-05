@@ -50,19 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD4-mvdDOssEX-WkeymsNw2qqXRvNBNibEE',
-    appId: '1:604119566392:android:885b929b39de791617becd',
+    apiKey: 'AIzaSyD4-mvdDOssEX-WkeymsNw2qqXRvNBNibE',
+    appId: '1:604119566392:android:881b61eb231d105217becd',
     messagingSenderId: '604119566392',
     projectId: 'futureself-75bc9',
-    storageBucket: 'futureself-75bc9.appspot.com',
+    storageBucket: 'futureself-75bc9.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBQgMb6EBlo5jWIwJksUaZWjyFePwigrqgg',
+    apiKey: 'AIzaSyBQgMb6EBlo5jWIwJksUaZWjyFePwigrqg',
     appId: '1:604119566392:ios:5be02faa58cfcda017becd',
     messagingSenderId: '604119566392',
     projectId: 'futureself-75bc9',
-    storageBucket: 'futureself-75bc9.appspot.com',
+    storageBucket: 'futureself-75bc9.firebasestorage.app',
+    iosClientId: '604119566392-vd4k8ek3cvit9os67aog2skt29a51ugt.apps.googleusercontent.com',
     iosBundleId: 'com.example.futureme',
   );
+
 }

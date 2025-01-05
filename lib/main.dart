@@ -6,7 +6,9 @@ import 'package:futureme/notifications/firebase_api.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+    name: 'purposify',
+    options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
     Future.microtask(() => FirebaseApi().initNotifications(context));
 
     return MaterialApp(
-      title: 'Futureself',
+      title: 'Purposify',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
