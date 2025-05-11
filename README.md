@@ -172,7 +172,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 📬 Contact
 
-Atif Aslam - [@atatisam14](https://twitter.com/atatwts)
+ [@atatisam14](https://twitter.com/atatwts)
 
 Project Link: [https://github.com/atahtee/futureself](https://github.com/atahtee/futureself)
 
