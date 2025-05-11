@@ -178,8 +178,4 @@ Project Link: [https://github.com/atahtee/futureself](https://github.com/atahtee
 
 ---
 
-<div align="center">
 
-Made with ❤️ by atati
-
-</div>
