@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌟 FutureSelf
+#  FutureSelf
 
 ### Send Messages to Your Future Self
 
